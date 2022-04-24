@@ -6,47 +6,53 @@ class Node{
     public:
     int data;
     Node* next;
+    Node* prev;
     Node(int data){
         this->data = data;
         this->next = NULL;
+        this->prev = NULL;
     }
 };
 
 class List{
     public:
-    Node* head = NULL;
     int count = 0;
+    Node* head = NULL;
+    Node* ptr;
+    Node* temp;
 
     void insert(int data, int pos = 100){
         Node* newnode = new Node(data);
-        Node* ptr = head;
         if(head == NULL || pos == 1){
             newnode->next = head;
+            newnode->prev = NULL;
             head = newnode;
         }
         else if(pos <= count){
-            for(int i=1; i<pos-1; i++){
+            ptr = head;
+            for(int i=1; i < pos-1; i++)
                 ptr = ptr->next;
-            }
-            Node* temp = ptr->next;
+            newnode->prev = ptr;
+            newnode->next = ptr->next;
             ptr->next = newnode;
-            newnode->next = temp;
         }
         else{
-            while(ptr->next != NULL){
+            ptr = head;
+            while(ptr->next != NULL)
                 ptr = ptr->next;
-            }
+            newnode->prev = ptr;
+            newnode->next = NULL;
+            ptr->next->prev = newnode;
             ptr->next = newnode;
         }
         count++;
     }
 
     void del(int data){
-        Node* ptr = head;
-        Node* temp;
+        ptr = head;
         if(head->data == data){
             temp = head;
-            head = temp->next;
+            head = head->next;
         }
         else{
             while(ptr->next->data != data){
@@ -54,18 +60,19 @@ class List{
             }
             temp = ptr->next;
             ptr->next = temp->next;
+            if(temp->next != NULL)
+                temp->next->prev = ptr;
         }
         free(temp);
         count--;
     }
-
-    void print(){
-        Node* ptr = head;
+    
+    void display(){
+        ptr = head;
         while(ptr != NULL){
             cout<<ptr->data<<"\t";
             ptr = ptr->next;
         }
-        cout<<"\n"<<count;
     }
 };
 
@@ -75,8 +82,8 @@ int main(){
     ll.insert(20);
     ll.insert(30);
     ll.insert(40);
-    ll.insert(50,4);
+    ll.insert(50, 4);
     ll.del(40);
-    ll.print();
+    ll.display();
     return 0;
 }
