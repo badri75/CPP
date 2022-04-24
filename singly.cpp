@@ -13,29 +13,59 @@ class Node{
 };
 
 class List{
-    Node* head;
     public:
-    List(){
-        head = NULL;
-    }
-    void insert(int data){
+    Node* head = NULL;
+    int count = 0;
+
+    void insert(int data, int pos = 100){
         Node* newnode = new Node(data);
-        if(head == NULL){
+        Node* ptr = head;
+        if(head == NULL || pos == 0){
+            newnode->next = head;
             head = newnode;
-            return;
         }
-        Node* temp = head;
-        while(temp->next != NULL){
-            temp = temp->next;
+        else if(pos < count){
+            for(int i=1; i<pos-1; i++){
+                ptr = ptr->next;
+            }
+            Node* temp = ptr->next;
+            ptr->next = newnode;
+            newnode->next = temp;
         }
-        temp->next = newnode;
+        else{
+            while(ptr->next != NULL){
+                ptr = ptr->next;
+            }
+            ptr->next = newnode;
+        }
+        count++;
     }
-    void print(){
-        Node* temp = head;
-        while(temp != NULL){
-            cout<<temp->data<<"\t";
-            temp = temp->next;
+
+    void del(int data){
+        Node* ptr = head;
+        Node* temp;
+        if(head->data == data){
+            temp = head;
+            head = temp->next;
         }
+        else{
+            while(ptr->next->data != data){
+                ptr = ptr->next;
+            }
+            temp = ptr->next;
+            ptr->next = temp->next;
+        }
+        free(temp);
+        count--;
+    }
+
+    void print(){
+        Node* ptr = head;
+        while(ptr != NULL){
+            cout<<ptr->data<<"\t";
+            ptr = ptr->next;
+        }
+        cout<<"\n"<<count;
     }
 };
 
@@ -45,6 +75,8 @@ int main(){
     ll.insert(20);
     ll.insert(30);
     ll.insert(40);
+    ll.insert(50,4);
+    ll.del(10);
     ll.print();
     return 0;
 }
