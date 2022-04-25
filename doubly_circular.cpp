@@ -44,7 +44,7 @@ class List{
             newnode->next = ptr->next;
             newnode->prev = ptr;
             ptr->next = newnode;
-            cout<<ptr->data<<endl;
+//            cout<<ptr->data<<endl;
         }
         else{
             ptr = head;
@@ -58,13 +58,35 @@ class List{
         count++;
     }
 
+    void del(int data){
+        Node* ptr = head;
+        Node* temp;
+        if(head->data == data){
+            temp = head;
+            head = temp->next;
+            for(i=0; i<count; i++)
+                ptr = ptr->next;
+            head->prev = ptr;
+            ptr->next = head;
+        }
+        else{
+            while(ptr->next->data != data)
+                ptr = ptr->next;
+            temp = ptr->next;
+            ptr->next = temp->next;
+            temp->next->prev = ptr;
+        }
+        free(temp);
+        count--;
+    }
+
     void print(){
         Node* ptr = head;
         for(i=0; i<count; i++){
             cout<<ptr->data<<"\t";
             ptr = ptr->next;
         }
-        cout<<"\n"<<count;
+//        cout<<"\n"<<count;
     }
 };
 
@@ -75,6 +97,7 @@ int main(){
     ll.insert(30);
     ll.insert(40);
     ll.insert(70, 3);
+    ll.del(10);
     ll.print();
     return 0;
 }
