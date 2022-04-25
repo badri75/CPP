@@ -32,8 +32,8 @@ class List{
             ptr = head;
             for(int i=1; i < pos-1; i++)
                 ptr = ptr->next;
-            newnode->prev = ptr;
             newnode->next = ptr->next;
+            newnode->prev = ptr;
             ptr->next = newnode;
         }
         else{
@@ -42,7 +42,6 @@ class List{
                 ptr = ptr->next;
             newnode->prev = ptr;
             newnode->next = NULL;
-            ptr->next->prev = newnode;
             ptr->next = newnode;
         }
         count++;
@@ -69,7 +68,7 @@ class List{
     
     void display(){
         ptr = head;
-        while(ptr != NULL){
+        while(ptr){
             cout<<ptr->data<<"\t";
             ptr = ptr->next;
         }

@@ -1,3 +1,1 @@
-List(){
-    //     head = NULL;
-    // }
+newnode->next = ptr->next;
