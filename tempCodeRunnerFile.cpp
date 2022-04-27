@@ -1,1 +1,0 @@
-newnode->next = ptr->next;
